@@ -145,10 +145,7 @@ if st.session_state.page == "form":
 
     st.title("🚀 AI Visibility Report Generator")
 
-    st.markdown("""
-    Enter your brand name and brand URL to generate a complete AI Visibility Report  
-    powered by LangGraph, GPT, Claude, and your scoring engine.
-    """)
+    st.markdown("""Enter your brand name and brand URL to generate a complete AI Visibility Report  """)
 
     with st.form("brand_form", clear_on_submit=False):
         brand_name = st.text_input("Brand Name", placeholder="e.g., Noise")

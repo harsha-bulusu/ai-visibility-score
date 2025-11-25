@@ -64,48 +64,7 @@ Based on:
 
 ## 📌 C. Architecture Diagram
 
-```
-                   ┌────────────────────┐
-                   │  User Input (Brand)│
-                   └──────────┬─────────┘
-                              │
-                              ▼
-                 ┌──────────────────────────┐
-                 │  Query Generator Node     │
-                 │ (LLM: OpenAI)             │
-                 └──────────┬───────────────┘
-                              │
-                              ▼
-         ┌───────────────────────────────────────────┐
-         │ Query Execution Nodes                     │
-         │ - OpenAI responses                        │
-         │ - Claude responses (for comparisons)      │
-         └───────────────────┬──────────────────────┘
-                             │
-                             ▼
-     ┌───────────────────────────────────────────────┐
-     │ Response Parsing & Chunk Extraction            │
-     │ (Brand mentions, competitor detection, ranking)│
-     └─────────────────────────┬─────────────────────┘
-                               │
-                               ▼
-               ┌───────────────────────────────┐
-               │ Visibility Scoring Engine     │
-               │ (Entity freq + Weighting)     │
-               └──────────────┬────────────────┘
-                               │
-                               ▼
-             ┌─────────────────────────────────────┐
-             │ Competitor Ranking Computation       │
-             │ (share-of-voice, dominance mapping)  │
-             └──────────────────┬───────────────────┘
-                                │
-                                ▼
-                 ┌────────────────────────────┐
-                 │ Final JSON Report           │
-                 │ + Streamlit Visualization   │
-                 └────────────────────────────┘
-```
+![img_3.png](img_3.png)
 
 ---
 
@@ -146,8 +105,8 @@ Based on:
 ### **1. Clone the repository**
 
 ```bash
-git clone <your-repo-url>
-cd AI-Visibility-Score
+git clone https://github.com/harsha-bulusu/ai-visibility-score.git
+cd ai-visibility-score
 ```
 
 ### **2. Create a virtual environment**
@@ -166,78 +125,34 @@ pip install -r requirements.txt
 
 ### **4. Add your environment variables**
 
-Create `.env`:
+Add API keys in config files `config.py`:
 
 ```
 OPENAI_API_KEY=your-openai-key
-ANTHROPIC_API_KEY=your-claude-key
-GOOGLE_API_KEY=your-gemini-key
+CLAUDE_API_KEY=your-claude-key
 ```
 
-### **5. Run the backend pipeline**
+### **5. Launch app**
 
 ```bash
-python agent.py
+streamlit run app.py
 ```
 
-### **6. Optional: Launch Streamlit visualization**
 
-```bash
-streamlit run dashboard.py
-```
-
----
-
-## 📌 F. API Keys / Usage Notes
-
-You must provide your own API keys:
-
-```
-OPENAI_API_KEY=xxxx
-ANTHROPIC_API_KEY=xxxx
-GOOGLE_API_KEY=xxxx
-```
-
-⚠️ *Do not hardcode keys in your source files.*
-Use `os.getenv()` everywhere.
-
----
-
-## 📌 G. Sample Inputs & Outputs
+## 📌 F. Sample Inputs & Outputs
 
 ### **Input**
 
-```json
-{
-  "brand_name": "Boat",
-  "competitors": ["Sony", "JBL", "Noise"],
-  "num_queries": 20
-}
-```
+![img.png](img.png)
 
 ### **Output (sample)**
+![img_1.png](img_1.png)
 
-```json
-{
-  "brand": "Boat",
-  "visibility_score": 73.4,
-  "top_competitors": {
-    "Sony": 41,
-    "JBL": 33,
-    "Noise": 12
-  },
-  "category_breakdown": {
-    "best_of": 81,
-    "comparisons": 67,
-    "troubleshooting": 74,
-    "generic": 79
-  }
-}
-```
+![img_2.png](img_2.png)
 
 ---
 
-## 📌 H. Video Demo Link
+## 📌 G. Video Demo Link
 
 📺 Add your YouTube or Loom link here:
 **👉 <YOUR VIDEO DEMO LINK>**
