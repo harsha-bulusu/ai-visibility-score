@@ -5,7 +5,6 @@ from streamlit_utils.scoring import MultiModelScoringEngine
 from streamlit_utils.charts import *
 from langgraph_agent.agent import app
 
-
 # --------------------------------------------------------
 # PAGE CONFIG
 # --------------------------------------------------------
@@ -83,10 +82,9 @@ if "result_ready" not in st.session_state:
 # -------------------------
 # FUNCTION: RUN LANGGRAPH
 # -------------------------
-def run_langgraph(brand_name, brand_url):
+def run_langgraph(brand_name, brand_url, region, number_of_queries):
     st.session_state.running = True
     st.session_state.result_ready = False
-
 
     st.markdown("## 🚀 Running AI Visibility Pipeline")
 
@@ -106,8 +104,8 @@ def run_langgraph(brand_name, brand_url):
             VisibilityState(
                 brand_name=brand_name,
                 website_url=brand_url,
-                num_queries=10,
-                region="India"
+                num_queries=number_of_queries,
+                region=region
             )
     ):
 
@@ -150,6 +148,9 @@ if st.session_state.page == "form":
     with st.form("brand_form", clear_on_submit=False):
         brand_name = st.text_input("Brand Name", placeholder="e.g., Noise")
         brand_url = st.text_input("Brand Website URL", placeholder="https://example.com")
+        region = st.text_input("Enter region", placeholder="India/US/Global")
+        number_of_queries = st.number_input("Enter number of queries to test", placeholder=10, min_value=10,
+                                            format="%d")
 
         submit = st.form_submit_button("Generate Report 🚀")
 
@@ -157,7 +158,7 @@ if st.session_state.page == "form":
         if not brand_name or not brand_url:
             st.error("Please fill in both fields.")
         else:
-            run_langgraph(brand_name, brand_url)
+            run_langgraph(brand_name, brand_url, region, number_of_queries)
             st.rerun()
 
 elif st.session_state.page == "dashboard":
@@ -188,9 +189,6 @@ elif st.session_state.page == "dashboard":
 
     results = MultiModelScoringEngine(raw_data).run()
 
-    model_name = st.selectbox("Select Model", list(results.keys()))
-    model = results[model_name]
-
     # ----------------------------------------------------
     # TABS
     # ----------------------------------------------------
@@ -212,24 +210,24 @@ elif st.session_state.page == "dashboard":
                     border: 1px solid #e0e0e0;
                     background-color: #fafafa;
                 }
-    
+
                 .dataframe th {
                     background-color: #4a90e2 !important;
                     color: white !important;
                     font-weight: bold !important;
                     font-size: 14px !important;
                 }
-    
+
                 .dataframe td {
                     font-size: 13px !important;
                     padding: 8px !important;
                 }
-    
+
                 /* Zebra striping */
                 .dataframe tr:nth-child(even) td {
                     background-color: #f2f6ff !important;
                 }
-    
+
                 .dataframe tr:hover td {
                     background-color: #e8f0fe !important;
                 }
@@ -255,6 +253,9 @@ elif st.session_state.page == "dashboard":
     # TAB 2 — VISUALIZATION
     # ----------------------------------------------------
     with tab2:
+        model_name = st.selectbox("Select Model", list(results.keys()))
+        model = results[model_name]
+
         st.markdown("### Inter Model Comparison metrics")
         st.markdown("""
                 <style>
@@ -300,7 +301,6 @@ elif st.session_state.page == "dashboard":
                 st.markdown("#### Competitor Score")
                 st.plotly_chart(competitor_heatmap(model["competitor_score"]), use_container_width=True)
 
-
     # ----------------------------------------------------
     # TAB 3 — DESCRIPTION
     # ----------------------------------------------------
@@ -342,14 +342,14 @@ elif st.session_state.page == "dashboard":
 
         st.markdown("""
         **Components:**
-    
+
         - **Brand Recall:**  
           \\( \text{Recall} = \frac{\text{Brand Mentioned}}{\text{Total}} \times 100 \\)
-    
+
         - **Ranking Quality:**  
           Lower rank = better score  
           \\( \text{Rank Score} = 100 - (\text{Avg Rank} - 1) \times 20 \\)
-    
+
         - **Category Coverage:**  
           \\( \text{Coverage} = \text{Avg visibility across categories} \\)
         """)

@@ -66,6 +66,8 @@ Based on:
 
 ![img_3.png](img_3.png)
 
+![img_4.png](img_4.png)
+
 ---
 
 ## 📌 D. Tech Stack
@@ -106,7 +108,7 @@ Based on:
 
 ```bash
 git clone https://github.com/harsha-bulusu/ai-visibility-score.git
-cd ai-visibility-score
+cd T18/ai-visibility-score
 ```
 
 ### **2. Create a virtual environment**
@@ -143,7 +145,7 @@ streamlit run app.py
 
 ### **Input**
 
-![img.png](img.png)
+![img_5.png](img_5.png)
 
 ### **Output (sample)**
 ![img_1.png](img_1.png)
